@@ -15,11 +15,14 @@ export class ChapterService {
     })  
   } 
   postChapterDetail(formData) {
-    return this.http.post(this.baseURL+'/PostChapter',formData);  
+    formData.selCategory = formData.selectedCategory.join(',');
+    formData.selectedCategory = null;
+    return this.http.post(this.baseURL,formData,{observe: 'response'});  
   }
   putChapterDetail(formData) {
-
-    return this.http.put(this.baseURL+'/PostChapter',formData);  
+    formData.selCategory = formData.selectedCategory.join(',');
+    formData.selectedCategory = null;
+    return this.http.put(this.baseURL,formData,{observe: 'response'});  
   }
   deleteChapter(id: number) {
     return this.http.delete(this.baseURL+'?id='+id,{observe: 'response'});  
