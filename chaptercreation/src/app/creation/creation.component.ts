@@ -64,12 +64,10 @@ export class CreationComponent implements OnInit, AfterViewInit {
     this.category = row.selectedCategory;
     row.selectedCategory = [];
     this.category.forEach(element => {
-      //this.selectedElement.push(element.category_Id);
       row.selectedCategory.push(element.category_Id);
     }); 
-    // row.selectedCategory = this.selectedElement;
-   // this.form.setValue(_.omit(row,row.selectedCategory.tittle));
-   this.form.setValue(row);
+    this.form.setValue(_.omit(row,'selCategory'));
+   //this.form.setValue(row);
   }
   onClose() {
     this.dialogRef.close();
@@ -82,21 +80,43 @@ export class CreationComponent implements OnInit, AfterViewInit {
   onSubmit() {
     if (this.form.valid) {
       if (!this.form.get('chapter_Id').value){
-        this.dataAccessService.postChapterDetail(this.form.getRawValue());
-        this._snackBar.open("Data Deleted Successfully","Close", {
-          horizontalPosition: 'end',
-          verticalPosition: 'top',
-          duration: 5000
-          
+        this.dataAccessService.postChapterDetail(this.form.value).subscribe((data)=>{
+          if(data.status ==200){
+            this._snackBar.open("Data Added Successfully","Close", {
+              horizontalPosition: 'end',
+              verticalPosition: 'top',
+              duration: 5000
+            });
+            this.onClose();
+          }else{
+            this._snackBar.open("Data Addition failed","Close", {
+              horizontalPosition: 'end',
+              verticalPosition: 'top',
+              duration: 5000
+            });
+            this.onClose();
+          }
         });
       }
       else{
-        this._snackBar.open("Data Deleted Successfully","Close", {
-          horizontalPosition: 'end',
-          verticalPosition: 'top',
-          duration: 5000
+        this.dataAccessService.putChapterDetail(this.form.value).subscribe((data)=>{
+          if(data.status ==200){
+            this._snackBar.open("Data Updated Successfully","Close", {
+              horizontalPosition: 'end',
+              verticalPosition: 'top',
+              duration: 5000
+            });
+            this.onClose();
+          }else{
+            this._snackBar.open("Data Updation Failed","Close", {
+              horizontalPosition: 'end',
+              verticalPosition: 'top',
+              duration: 5000
+            });
+            this.onClose();
+          }
+          
         });
-        this.dataAccessService.putChapterDetail(this.form.getRawValue());
       }
       this.form.reset();
       this.initializeFormGroup();
