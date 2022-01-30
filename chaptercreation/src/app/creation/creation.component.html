@@ -1,0 +1,86 @@
+<div mat-dialog-title style="display: flex">
+    <span>{{this.form.controls['chapter_Id'].value?"Modify Chapter":"New Chapter"}}</span>
+    <span class="spacer"></span>
+    <button class="btn-dialog-close" mat-icon-button (click)="onClose()" tabIndex="-1">
+        <mat-icon>clear</mat-icon>
+    </button>
+</div>
+<form [formGroup]="form" class="normal-form" (submit)="onSubmit()">
+    <mat-grid-list cols="2" rowHeight="60px">
+        <mat-grid-tile>
+            <div>
+                <input type="hidden" formControlName="chapter_Id">
+                <mat-form-field>
+                    <mat-label>Tittle*</mat-label>
+                    <input formControlName="tittle" matInput placeholder="Tittle*">
+                    <mat-error>This field is mandatory.</mat-error>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div>
+                <mat-form-field>
+                    <mat-label>Publish Date Time*</mat-label>
+                    <input formControlName="publishedDatetime" matInput [matDatepicker]="picker"
+                        placeholder="Publish Date Time">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error>This field is mandatory.</mat-error>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div>
+                <mat-form-field>
+                    <mat-label>Category*</mat-label>
+                    <mat-select formControlName="selectedCategory" placeholder="Category*" multiple>
+                        <ng-container *ngFor="let item of categoryList">
+                            <mat-option [value]="item.category_Id">{{item.tittle}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                    <mat-error>This field is mandatory.</mat-error>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div>
+                <mat-form-field>
+                    <mat-label>Department Type*</mat-label>
+                    <mat-select formControlName="departmentType" placeholder="Department Type*">
+                        <mat-option value="IT">IT</mat-option>
+                        <mat-option value="Finance">Finance</mat-option>
+                        <mat-option value="Admin">Admin</mat-option>
+                        <mat-option value="Transport">Transport</mat-option>
+                    </mat-select>
+                    <mat-error>This field is mandatory.</mat-error>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="add-bottom-padding">
+                <mat-checkbox formControlName="active">Chapter Is Active</mat-checkbox>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="button-row">
+                <button 
+                    mat-raised-button 
+                    color="primary" 
+                    type="submit" 
+                    [disabled]="form.invalid"
+                    style="margin-right: 16px;"
+                >
+                    Submit
+                </button>
+                <button 
+                    mat-raised-button 
+                    color="warn" 
+                    type="button" 
+                    (click)="onClose()"
+                >
+                    Cancel
+                </button>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

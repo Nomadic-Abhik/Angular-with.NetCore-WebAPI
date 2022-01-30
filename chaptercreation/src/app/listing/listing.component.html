@@ -1,0 +1,63 @@
+<mat-toolbar color="primary">
+  <span>Chapter List</span>
+  <span class="spacer"></span>
+  <button mat-raised-button type="button" (click)="createRecord()">
+    <mat-icon>add</mat-icon>Create Record
+  </button>
+</mat-toolbar>
+
+<div class="container">
+  <div class="mat-elevation-z3">
+    <mat-table [dataSource]="listData">
+      <ng-container matColumnDef="Tittle">
+        <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.tittle}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="DepartmentTypeName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Department Name</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.departmentType}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="PublishedDateTime">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Published DateTime</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.publishedDatetime | date:"MM-dd-yyyy"}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="category">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Category</mat-header-cell>
+        <mat-cell *matCellDef="let element;let i =index">
+          <mat-select placeholder="Click to Expand" class="category-select">
+            <ng-container *ngIf="element.selectedCategory.length==0">
+              <mat-option>No data found </mat-option>
+            </ng-container>
+            <ng-container>
+              <mat-option [value]="item.category_Id" *ngFor="let item of element.selectedCategory">
+                {{item.tittle}}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="active">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Active</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <mat-checkbox disabled [checked]="element.active"></mat-checkbox>
+        </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button type="button" (click)="onEditRecord(element)">
+            <mat-icon>launch</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" type="button" (click)="deleteData(element)">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
