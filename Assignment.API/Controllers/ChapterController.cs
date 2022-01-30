@@ -117,6 +117,7 @@ namespace Assignment.API.Controllers
             try
             {
                 var existingEntry = _context.chapterModels.Where(c => c.chapter_Id == obj.chapter_Id).FirstOrDefault();
+                _context.mappingModels.RemoveRange(_context.mappingModels.Where(x => x.chapter_Id == obj.chapter_Id));
                 if (existingEntry != null)
                 {
                     existingEntry.tittle = obj.tittle;
@@ -139,6 +140,18 @@ namespace Assignment.API.Controllers
 
                 }
                 _context.SaveChanges();
+                int _chapid = existingEntry.chapter_Id;
+                string[] textSplit = obj.selCategory.Split(",");
+                for (int count = 0; count < textSplit.Length; count++)
+                {
+                    MappingModel mapModel = new MappingModel();
+                    mapModel.chapter_Id = _chapid;
+                    mapModel.categoryId = Convert.ToInt32(textSplit[count]);
+                    mapModel.creationTime = DateTime.Now;
+                    mapModel.creatorUserId = 101;//hard coding with random value
+                    _context.mappingModels.Add(mapModel);
+                    _context.SaveChanges();
+                }
                 return Ok();
             }
             catch (Exception ex)

@@ -34,8 +34,8 @@ export class CreationComponent implements OnInit, AfterViewInit {
       chapter_Id: new FormControl(null),
       tittle: new FormControl('', Validators.required),
       active: new FormControl(true),
-      selectedCategory: new FormControl([], Validators.minLength(1)),
-      departmentType: new FormControl('', Validators.minLength(1)),
+      selectedCategory: new FormControl([], Validators.required),
+      departmentType: new FormControl('', Validators.min(0)),
       publishedDatetime: new FormControl('', Validators.required),
     })
   }
